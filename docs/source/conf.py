@@ -1,6 +1,6 @@
 import os, sys
 sys.path.insert(0, os.path.abspath('../..'))
-from template import __about__
+from pymongohelper import __about__
 
 # Configuration file for the Sphinx documentation builder.
 #
