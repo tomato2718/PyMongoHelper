@@ -15,7 +15,7 @@ class PyMongoHelper(ABC):
         class MongoReader(PyMongoHelper):
             def __call__(self):
                 # do some query here
-                res = self.collection.find()
+                res = self._collection.find_one()
                 return res
 
         with MongoReader(database, 'example_collection') as reader:
@@ -23,7 +23,7 @@ class PyMongoHelper(ABC):
     
     """
     def __init__(self, database: Database, collection: str) -> None:
-        self.__collection = database.get_collection(collection)
+        self._collection = database.get_collection(collection)
 
     def __enter__(self) -> Self:
         return self
