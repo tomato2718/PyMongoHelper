@@ -1,12 +1,14 @@
 from types import TracebackType
-from typing import Self, Any
+from typing import Self, Generic
 from abc import ABC, abstractmethod
 
 from pymongo.database import Database
 from pymongo.errors import PyMongoError
 
+from .typing import DocumentType
 
-class PyMongoHelper(ABC):
+
+class PyMongoHelper(ABC, Generic[DocumentType]):
     """
     Base class of ``PyMongoHelper``.
 
@@ -15,15 +17,15 @@ class PyMongoHelper(ABC):
         class MongoReader(PyMongoHelper):
             def __call__(self):
                 # do some query here
-                res = self.collection.find()
+                res = self._collection.find_one()
                 return res
 
         with MongoReader(database, 'example_collection') as reader:
             data = reader()
     
     """
-    def __init__(self, database: Database, collection: str) -> None:
-        self.__collection = database.get_collection(collection)
+    def __init__(self, database: Database[DocumentType], collection: str) -> None:
+        self._collection = database.get_collection(collection)
 
     def __enter__(self) -> Self:
         return self
@@ -42,5 +44,5 @@ class PyMongoHelper(ABC):
             return True
 
     @abstractmethod
-    def __call__(self) -> Any:
+    def __call__(self) -> DocumentType:
         pass
