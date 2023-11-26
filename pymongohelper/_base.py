@@ -1,3 +1,5 @@
+__all__ = ["PyMongoHelper"]
+
 from types import TracebackType
 from typing import Self, Generic
 from abc import ABC, abstractmethod
@@ -25,6 +27,12 @@ class PyMongoHelper(ABC, Generic[DocumentType]):
     
     """
     def __init__(self, database: Database[DocumentType], collection: str) -> None:
+        """
+        Constructor method.
+
+        :param Database[DocumentType] database: Instance of pymongo database.
+        :param str collection: The name of collection to use.
+        """
         self._collection = database.get_collection(collection)
 
     def __enter__(self) -> Self:
