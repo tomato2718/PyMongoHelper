@@ -15,7 +15,7 @@ class PyMongoReader(PyMongoHelper[DocumentType]):
         database = client.get_database()
 
         with PyMongoReader(database=database, collection="foobar") as reader:
-            data = reader(item="abc", "quantity": 10)
+            data = reader(item="abc", quantity=10)
     """
 
     def __call__(self, **filter: Any) -> list[DocumentType]:
