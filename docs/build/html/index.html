@@ -252,26 +252,26 @@
 
 <span class="c1"># configure your own pymongo client</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span>
-   <span class="n">host</span><span class="o">=</span><span class="n">URI</span><span class="p">,</span>
+    <span class="n">host</span><span class="o">=</span><span class="n">URI</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">database</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_database</span><span class="p">(</span><span class="n">DATABASE_NAME</span><span class="p">)</span>
 
 <span class="c1"># create decorators base on collections</span>
 <span class="n">use_foo_collection</span> <span class="o">=</span> <span class="n">UseCollectionDecorator</span><span class="p">(</span>
-   <span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">,</span>
-   <span class="n">collection_name</span><span class="o">=</span><span class="n">COLLECTION_NAME</span><span class="p">,</span>
+    <span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">,</span>
+    <span class="n">collection_name</span><span class="o">=</span><span class="n">COLLECTION_NAME</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># apply decorators to your database models</span>
 <span class="nd">@use_foo_collection</span>
 <span class="k">class</span> <span class="nc">MongoReader</span><span class="p">(</span><span class="n">BaseHelper</span><span class="p">):</span>
-   <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-      <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="o">.</span><span class="n">find_one</span><span class="p">({})</span>
-      <span class="k">return</span> <span class="n">result</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="o">.</span><span class="n">find_one</span><span class="p">({})</span>
+        <span class="k">return</span> <span class="n">result</span>
 
 <span class="c1"># use the database models</span>
 <span class="k">with</span> <span class="n">MongoReader</span><span class="p">()</span> <span class="k">as</span> <span class="n">read_data</span><span class="p">:</span>
-   <span class="n">result</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">()</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
