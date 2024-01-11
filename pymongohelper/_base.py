@@ -8,6 +8,7 @@ from typing import Self, Generic
 from abc import ABC, abstractmethod
 
 from pymongo.database import Database
+from pymongo.collection import Collection
 
 from .typing import DocumentType
 
@@ -32,6 +33,8 @@ class BaseHelper(ABC, Generic[DocumentType]):
             data = reader()
 
     """
+
+    _collection: Collection
 
     def __init__(self) -> None:
         pass
