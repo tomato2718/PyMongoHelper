@@ -1,46 +1,45 @@
-import pytest
 from unittest.mock import MagicMock
-from pymongo.database import Database
+
+import pytest
 from pymongo.errors import PyMongoError
 
-from pymongohelper._base import PyMongoHelper
+from pymongohelper._base import BaseHelper, PyMongoHelper
 
 
+class TestBasicHelper:
+    class ChildHelper(BaseHelper):
+        def __call__(self) -> dict:
+            return {}
 
+    @classmethod
+    def test_enter(cls):
+        with cls.ChildHelper() as connection:
+            assert isinstance(connection, BaseHelper)
 
-@pytest.fixture(scope="module")
-def database() -> Database:
-    database = MagicMock()
-    return database
-
-class TestPyMongoHelper:
-    
-    @staticmethod
-    @pytest.fixture(scope="class")
-    def child_instance(database: Database) -> PyMongoHelper:
-
-        class Child(PyMongoHelper):
-            def __call__(self) -> dict:
-                return {}
-        
-        return Child(database=database, collection="foo")
-    
-    @staticmethod
-    def test_enter(child_instance: PyMongoHelper):
-        with child_instance as connection:
-            assert isinstance(connection, PyMongoHelper)
-        
-    @staticmethod
+    @classmethod
     @pytest.mark.parametrize(
-        argnames='exc_type',
+        argnames="exc_type",
         argvalues=[
             Exception,
-            PyMongoError
-        ]
+            PyMongoError,
+        ],
     )
-    def test_exit(child_instance: PyMongoHelper, exc_type: type[Exception]):
+    def test_exit(cls, exc_type: type[Exception]):
         with (
-            child_instance,
-            pytest.raises(exc_type)
+            cls.ChildHelper(),
+            pytest.raises(exc_type),
         ):
             raise exc_type()
+
+class TestPyMongoHelper:
+    class ChildHelper(PyMongoHelper):
+        def __call__(self) -> dict:
+            return {}
+        
+    @classmethod
+    def test_init_(cls):
+        database = MagicMock()
+        collection_name = "MockCollection"
+
+        with cls.ChildHelper(database=database, collection_name=collection_name) as reader:
+            assert isinstance(reader._collection, MagicMock)
