@@ -2,7 +2,11 @@
 Helper module makes pymongo more clean.
 """
 
-__all__ = ["PyMongoHelper", "PyMongoReader"]
+__all__ = [
+    "BaseHelper",
+    "PyMongoHelper",
+    "typing",
+]
 
-from ._base import PyMongoHelper
-from ._readers import PyMongoReader
+from ._base import BaseHelper, PyMongoHelper
+from . import typing
