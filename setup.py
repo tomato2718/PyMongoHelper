@@ -16,7 +16,7 @@ metadata: dict[str, str] = {
     "description": getattr(__about__, "__summary__"),
 }
 
-with open(f"./{PROJECT}/requirements.txt", "r") as file:
+with open("./requirements.txt", "r") as file:
     req = file.readlines()
 
 setup(
