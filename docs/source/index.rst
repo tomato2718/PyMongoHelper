@@ -92,7 +92,7 @@ Run the tests
 
 .. code-block:: shell
 
-   >>> python -m pytest
+   python -m pytest
 
 
 Support
