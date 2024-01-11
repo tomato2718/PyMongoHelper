@@ -1,61 +1,84 @@
-# Template
+# PyMongoHelper
+
 ## Summary
 
+A library help you design pymongo client more clean.
+
+
 ## Requirements
+
 ### System
-- `python >= 3.10.10`
+
+- `python>=3.10`
 
 ### Python
 
+- `pymongo==4.6.1`
+
 
 ## Setup
+
 ### Installation
+
 - Install with Python pip
+
 ```sh
->>> pip install template-1.0.0-py3-none-any.whl
+pip install pymongohelper-0.1.0-py3-none-any.whl
 ```
 
-- Build Docker Image
-```sh
->>> mkdir tmp
->>> pip install template-1.0.0-py3-none-any.whl -t tmp
->>> docker build -t  template:1.0.0 template
-```
 
 ## Usage
-### Start Up
-- Import this Project as a module.
+
+### Import as a module
+
 ```py
+from typing import Any
 
+from pymongo import MongoClient
+from pymongohelper import BaseHelper, UseCollectionDecorator
+
+# configure your own pymongo client
+client = MongoClient(
+    host=URI,
+)
+database = client.get_database(DATABASE_NAME)
+
+# create decorators base on collections
+use_foo_collection = UseCollectionDecorator(
+    database=database,
+    collection_name=COLLECTION_NAME,
+)
+
+# apply decorators to your database models
+@use_foo_collection
+class MongoReader(BaseHelper):
+    def __call__(self) -> dict[str, Any]:
+        result = self._collection.find_one({})
+        return result
+
+# use the database models
+with MongoReader() as read_data:
+    result = read_data()
 ```
 
-- Use Python to execute this project.
-```sh
->>> python -OOm template
-```
-
-- Use Docker to execute this project.
-```sh
->>> docker run -it --rm template
-```
-
-## Features
-
-### Arguments
-#### Requirement 
-
-#### Optional
 
 ## Run the tests
+
 - Unit tests
+
 ```sh
->>> python -m tests
+>>> python -m pytest
 ```
 
+
 ## Support
+
 ### Author
+
 - `yveschen2718@gmail.com`
+
 ### Maintainer
+
 - `yveschen2718@gmail.com`
 
 <!--links-->
