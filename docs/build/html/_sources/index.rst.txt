@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Template Documentation
+PyMongoHelper Documentation
 ====================================
 
 Contents
@@ -12,10 +12,12 @@ Contents
 .. toctree::
    :maxdepth: 2
 
+   modules
+
 Summary
 -------------
 
-Under development.
+A library help you design pymongo client more clean.
 
 
 Requirements
@@ -24,12 +26,12 @@ Requirements
 System
 ^^^^^^^^^^^^^
 
-- ``python >= 3.10.10``
+- ``python>=3.10``
 
 Python
 ^^^^^^^^^^^^^
 
-- ``Something >= 1.0``
+- ``pymongo==4.6.1``
 
 Setup
 -------------
@@ -41,36 +43,46 @@ Installation
 
 .. code-block:: shell
 
-   >>> pip install template-1.0.0-py3-none-any.whl
+   pip install pymongohelper-0.1.0-py3-none-any.whl
 
 
 Usage
 -------------
 
-Start Up
-^^^^^^^^^^^^^
+Import as a module
+^^^^^^^^^^^^^^^^^^
 
 - Import this Project as a module.
 
 .. code-block:: python
 
-   do_something()
+   from typing import Any
 
-- Use Python to execute this project.
+   from pymongo import MongoClient
+   from pymongohelper import BaseHelper, UseCollectionDecorator
 
-.. code-block:: shell
+   # configure your own pymongo client
+   client = MongoClient(
+      host=URI,
+   )
+   database = client.get_database(DATABASE_NAME)
 
-   >>> do_something
+   # create decorators base on collections
+   use_foo_collection = UseCollectionDecorator(
+      database=database,
+      collection_name=COLLECTION_NAME,
+   )
 
-Features
---------------
+   # apply decorators to your database models
+   @use_foo_collection
+   class MongoReader(BaseHelper):
+      def __call__(self) -> dict[str, Any]:
+         result = self._collection.find_one({})
+         return result
 
-some feature
-^^^^^^^^^^^^^^
-
-.. code-block:: python
-
-   do_something()
+   # use the database models
+   with MongoReader() as read_data:
+      result = read_data()
 
 
 Run the tests
@@ -80,7 +92,7 @@ Run the tests
 
 .. code-block:: shell
 
-   >>> python -m tests
+   python -m pytest
 
 
 Support
