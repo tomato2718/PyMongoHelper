@@ -1,26 +1,19 @@
-'''
+"""
 Informations about the project.
-'''
+"""
 
 __all__ = [
-    '__project__',
-    '__version__',
-    '__author__',
-    '__maintainer__',
-    '__release__',
-    '__summary__',
-    '__usage__',
+    "__project__",
+    "__version__",
+    "__author__",
+    "__maintainer__",
+    "__release__",
+    "__summary__",
 ]
 
-__project__ = 'template'
-__version__ = '0.0.0'
-__author__ = 'yveschen2718@gmail.com'
-__maintainer__ = 'yveschen2718@gmail.com'
-__release__ = '2023/07/31'
-__summary__ = 'Python project template'
-__usage__ = '''
-Usage:
-    >>> 
-    >>> 
-    >>> 
-'''
+__project__ = "pymongohelper"
+__version__ = "0.1.0"
+__author__ = "yveschen2718@gmail.com"
+__maintainer__ = "yveschen2718@gmail.com"
+__release__ = "2024/01/11"
+__summary__ = "A library help you design pymongo client more clean."
