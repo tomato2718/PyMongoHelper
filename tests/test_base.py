@@ -3,10 +3,15 @@ from unittest.mock import MagicMock
 import pytest
 from pymongo.errors import PyMongoError
 
-from pymongohelper._base import BaseHelper, PyMongoHelper
+from pymongohelper._base import (
+    AsyncBaseHelper,
+    AsyncMongoHelper,
+    BaseHelper,
+    PyMongoHelper,
+)
 
 
-class TestBasicHelper:
+class TestBaseHelper:
     class ChildHelper(BaseHelper):
         def __call__(self) -> dict:
             return {}
@@ -31,15 +36,52 @@ class TestBasicHelper:
         ):
             raise exc_type()
 
+
 class TestPyMongoHelper:
     class ChildHelper(PyMongoHelper):
         def __call__(self) -> dict:
             return {}
-        
+
     @classmethod
     def test_init_(cls):
-        database = MagicMock()
-        collection_name = "MockCollection"
+        collection = MagicMock()
 
-        with cls.ChildHelper(database=database, collection_name=collection_name) as reader:
+        with cls.ChildHelper(collection) as reader:
+            assert isinstance(reader._collection, MagicMock)
+
+
+class TestAsyncBaseHelper:
+    class ChildHelper(AsyncBaseHelper):
+        async def __call__(self) -> dict:
+            return {}
+
+    @classmethod
+    async def test_enter(cls):
+        async with cls.ChildHelper() as connection:
+            assert isinstance(connection, AsyncBaseHelper)
+
+    @classmethod
+    @pytest.mark.parametrize(
+        argnames="exc_type",
+        argvalues=[
+            Exception,
+            PyMongoError,
+        ],
+    )
+    async def test_exit(cls, exc_type: type[Exception]):
+        with pytest.raises(exc_type):
+            async with cls.ChildHelper():
+                raise exc_type()
+
+
+class TestAsyncMongoHelper:
+    class ChildHelper(AsyncMongoHelper):
+        async def __call__(self) -> dict:
+            return {}
+
+    @classmethod
+    async def test_init_(cls):
+        collection = MagicMock()
+
+        async with cls.ChildHelper(collection) as reader:
             assert isinstance(reader._collection, MagicMock)
