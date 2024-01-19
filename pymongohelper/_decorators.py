@@ -4,49 +4,43 @@ __all__ = [
 
 from typing import Any, TypeVar
 
-from pymongo.database import Database
+from pymongo.collection import Collection
 
-from ._base import BaseHelper
+from ._base import AsyncBaseHelper, BaseHelper
 from .typing import DocumentType
 
-
-_SubHelperClass = TypeVar("_SubHelperClass", bound=BaseHelper[Any])
+_SubHelperClass = TypeVar("_SubHelperClass", bound=BaseHelper[Any] | AsyncBaseHelper[Any])
 
 
 class UseCollectionDecorator:
     """
-    Decorator class to add collection into sub class of BaseHelper.
+    Decorator class to add collection into sub class of BaseHelper or AsyncBaseHelper.
 
     Usage::
+        
+        foo_collection = database.get_collection("foo")
+        use_foo_collection = UseCollectionDecorator(foo_collection)
 
-        use_mock_collection = UseCollectionDecorator(
-            database=database,
-            collection_name=collection_name,
-        )
-
-        # this will add ``database.collection`` into TestHelper class
-        @use_mock_collection
+        # this will set ``TestHelper._collection`` as ``foo_collection``
+        @use_foo_collection
         class TestHelper(BaseHelper):
-            def __call__(self) -> dict:
+        
+            def __call__(self) -> dict[str, Any]:
                 result = self._collection.findone()
                 return result
     """
 
     def __init__(
         self,
-        database: Database[DocumentType],
-        collection_name: str,
+        collection: Collection[DocumentType],
     ) -> None:
         """
         Constructor method.
 
-        :param Database[DocumentType] database: Instance of pymongo database.
-        :param str collection: The name of collection to use.
+        :param Collection[DocumentType] collection: The collection to use.
         """
-        self._database = database
-        self._collection_name = collection_name
+        self._collection = collection
 
     def __call__(self, helper_class: type[_SubHelperClass]) -> type[_SubHelperClass]:
-        helper_class._collection = self._database.get_collection(self._collection_name)
-
+        helper_class._collection = self._collection
         return helper_class
