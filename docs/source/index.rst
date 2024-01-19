@@ -38,7 +38,7 @@ Installation
 
 .. code-block:: shell
 
-    pip install pymongohelper-0.1.0-py3-none-any.whl
+    pip install pymongohelper-0.2.0-py3-none-any.whl
 
 
 Usage
@@ -61,12 +61,10 @@ Import as a module
         host=URI,
     )
     database = client.get_database(DATABASE_NAME)
-    
+    collection = database.get_collection(COLLLECTION_NAME)
+
     # create decorators base on collections
-    use_foo_collection = UseCollectionDecorator(
-        database=database,
-        collection_name=COLLECTION_NAME,
-    )
+    use_foo_collection = UseCollectionDecorator(collection)
     
     # apply decorators to your database models
     @use_foo_collection

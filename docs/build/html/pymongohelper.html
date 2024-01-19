@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="pymongohelper" href="modules.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>pymongohelper package - pymongohelper 0.1.0 documentation</title>
+        <title>pymongohelper package - pymongohelper 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -124,7 +124,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">pymongohelper 0.1.0 documentation</div></a>
+      <a href="index.html"><div class="brand">pymongohelper 0.2.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -147,7 +147,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">pymongohelper 0.1.0 documentation</span>
+  <span class="sidebar-brand-text">pymongohelper 0.2.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -207,14 +207,65 @@
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pymongohelper" title="Link to this heading">#</a></h2>
 <p>Helper module makes pymongo more clean.</p>
 <dl class="py class">
+<dt class="sig sig-object py" id="pymongohelper.AsyncBaseHelper">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymongohelper.</span></span><span class="sig-name descname"><span class="pre">AsyncBaseHelper</span></span><a class="headerlink" href="#pymongohelper.AsyncBaseHelper" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">_DocumentType</span></code>]</p>
+<p>Base async helper class for pymongo model.</p>
+<p>This class do nothing, just a template help you design db models.</p>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">foo_collection</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">AsyncMongoReader</span><span class="p">(</span><span class="n">AsyncBaseHelper</span><span class="p">):</span>
+    <span class="n">_collection</span> <span class="o">=</span> <span class="n">foo_collection</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># do some query here</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="o">.</span><span class="n">find_one</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">res</span>
+
+<span class="k">async</span> <span class="k">with</span> <span class="n">AsyncMongoReader</span><span class="p">()</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="n">reader</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pymongohelper.AsyncMongoHelper">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymongohelper.</span></span><span class="sig-name descname"><span class="pre">AsyncMongoHelper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">_DocumentType</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymongohelper.AsyncMongoHelper" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymongohelper.AsyncBaseHelper" title="pymongohelper._base.AsyncBaseHelper"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncBaseHelper</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">_DocumentType</span></code>]</p>
+<p>Helper async class with simple constructor method.</p>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MongoReader</span><span class="p">(</span><span class="n">AsyncMongoHelper</span><span class="p">[</span><span class="n">DocumentType</span><span class="p">]):</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DocumentType</span><span class="p">:</span>
+        <span class="c1"># do some query here</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="o">.</span><span class="n">find_one</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">res</span>
+
+<span class="n">foo_collection</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">)</span>
+
+<span class="k">async</span> <span class="k">with</span> <span class="n">MongoReader</span><span class="p">(</span><span class="n">foo_collection</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="n">reader</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Constructor method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>collection</strong> (<em>Collection</em><em>[</em><em>DocumentType</em><em>]</em>) – The collection to use.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="pymongohelper.BaseHelper">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymongohelper.</span></span><span class="sig-name descname"><span class="pre">BaseHelper</span></span><a class="headerlink" href="#pymongohelper.BaseHelper" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">_DocumentType</span></code>]</p>
 <p>Base helper class for pymongo model.</p>
 <p>This class do nothing, just a template help you design db models.</p>
 <p>Usage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MongoReader</span><span class="p">(</span><span class="n">BasicHelper</span><span class="p">):</span>
-    <span class="n">_collection</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">foo_collection</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">MongoReader</span><span class="p">(</span><span class="n">BaseHelper</span><span class="p">):</span>
+    <span class="n">_collection</span> <span class="o">=</span> <span class="n">foo_collection</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># do some query here</span>
@@ -229,7 +280,7 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pymongohelper.PyMongoHelper">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymongohelper.</span></span><span class="sig-name descname"><span class="pre">PyMongoHelper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">database</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Database</span><span class="p"><span class="pre">[</span></span><span class="pre">_DocumentType</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymongohelper.PyMongoHelper" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymongohelper.</span></span><span class="sig-name descname"><span class="pre">PyMongoHelper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">_DocumentType</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymongohelper.PyMongoHelper" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pymongohelper.BaseHelper" title="pymongohelper._base.BaseHelper"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseHelper</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">_DocumentType</span></code>]</p>
 <p>Helper class with simple constructor method.</p>
 <p>Usage:</p>
@@ -239,36 +290,34 @@
         <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="o">.</span><span class="n">find_one</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">res</span>
 
-<span class="k">with</span> <span class="n">MongoReader</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="s1">&#39;example_collection&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+<span class="n">foo_collection</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">MongoReader</span><span class="p">(</span><span class="n">foo_collection</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">reader</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Constructor method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>database</strong> (<em>Database</em><em>[</em><em>DocumentType</em><em>]</em>) – Instance of pymongo database.</p></li>
-<li><p><strong>collection</strong> (<em>str</em>) – The name of collection to use.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>collection</strong> (<em>Collection</em><em>[</em><em>DocumentType</em><em>]</em>) – The collection to use.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pymongohelper.UseCollectionDecorator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymongohelper.</span></span><span class="sig-name descname"><span class="pre">UseCollectionDecorator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">database</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Database</span><span class="p"><span class="pre">[</span></span><span class="pre">_DocumentType</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymongohelper.UseCollectionDecorator" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymongohelper.</span></span><span class="sig-name descname"><span class="pre">UseCollectionDecorator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">_DocumentType</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymongohelper.UseCollectionDecorator" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Decorator class to add collection into sub class of BaseHelper.</p>
+<p>Decorator class to add collection into sub class of BaseHelper or AsyncBaseHelper.</p>
 <p>Usage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">use_mock_collection</span> <span class="o">=</span> <span class="n">UseCollectionDecorator</span><span class="p">(</span>
-    <span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">,</span>
-    <span class="n">collection_name</span><span class="o">=</span><span class="n">collection_name</span><span class="p">,</span>
-<span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">foo_collection</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">)</span>
+<span class="n">use_foo_collection</span> <span class="o">=</span> <span class="n">UseCollectionDecorator</span><span class="p">(</span><span class="n">foo_collection</span><span class="p">)</span>
 
-<span class="c1"># this will add ``database.collection`` into TestHelper class</span>
-<span class="nd">@use_mock_collection</span>
+<span class="c1"># this will set ``TestHelper._collection`` as ``foo_collection``</span>
+<span class="nd">@use_foo_collection</span>
 <span class="k">class</span> <span class="nc">TestHelper</span><span class="p">(</span><span class="n">BaseHelper</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="o">.</span><span class="n">findone</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">result</span>
 </pre></div>
@@ -276,10 +325,7 @@
 <p>Constructor method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>database</strong> (<em>Database</em><em>[</em><em>DocumentType</em><em>]</em>) – Instance of pymongo database.</p></li>
-<li><p><strong>collection</strong> (<em>str</em>) – The name of collection to use.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>collection</strong> (<em>Collection</em><em>[</em><em>DocumentType</em><em>]</em>) – The collection to use.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -338,6 +384,8 @@
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-pymongohelper.typing">pymongohelper.typing module</a></li>
 <li><a class="reference internal" href="#module-pymongohelper">Module contents</a><ul>
+<li><a class="reference internal" href="#pymongohelper.AsyncBaseHelper"><code class="docutils literal notranslate"><span class="pre">AsyncBaseHelper</span></code></a></li>
+<li><a class="reference internal" href="#pymongohelper.AsyncMongoHelper"><code class="docutils literal notranslate"><span class="pre">AsyncMongoHelper</span></code></a></li>
 <li><a class="reference internal" href="#pymongohelper.BaseHelper"><code class="docutils literal notranslate"><span class="pre">BaseHelper</span></code></a></li>
 <li><a class="reference internal" href="#pymongohelper.PyMongoHelper"><code class="docutils literal notranslate"><span class="pre">PyMongoHelper</span></code></a></li>
 <li><a class="reference internal" href="#pymongohelper.UseCollectionDecorator"><code class="docutils literal notranslate"><span class="pre">UseCollectionDecorator</span></code></a></li>
@@ -354,7 +402,7 @@
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=01f34227"></script>
+</div><script src="_static/documentation_options.js?v=938c9ccc"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>
