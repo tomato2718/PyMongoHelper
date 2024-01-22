@@ -16,9 +16,9 @@ from .typing import DocumentType
 
 class BaseHelper(ABC, Generic[DocumentType]):
     """
-    Base helper class for pymongo model.
+    Base helper class for pymongo clients.
 
-    This class do nothing, just a template help you design db models.
+    This class do nothing, just a template help you design db clients.
 
     Usage::
         
@@ -88,9 +88,9 @@ class PyMongoHelper(BaseHelper[DocumentType]):
 
 class AsyncBaseHelper(ABC, Generic[DocumentType]):
     """
-    Base async helper class for pymongo model.
+    Base async helper class for pymongo clients.
 
-    This class do nothing, just a template help you design db models.
+    This class do nothing, just a template help you design db clients.
 
     Usage::
 

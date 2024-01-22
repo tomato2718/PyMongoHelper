@@ -47,14 +47,14 @@ collection = database.get_collection(COLLLECTION_NAME)
 # create decorators base on collections
 use_foo_collection = UseCollectionDecorator(collection)
 
-# apply decorators to your database models
+# apply decorators to your database querying objects
 @use_foo_collection
 class MongoReader(BaseHelper):
     def __call__(self) -> dict[str, Any]:
         result = self._collection.find_one({})
         return result
 
-# use the database models
+# use the database querying objects
 with MongoReader() as read_data:
     result = read_data()
 ```
