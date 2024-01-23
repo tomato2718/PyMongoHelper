@@ -1,7 +1,6 @@
 from unittest.mock import MagicMock
 
 import pytest
-from pymongo.errors import PyMongoError
 
 from pymongohelper._base import (
     AsyncBaseHelper,
@@ -26,7 +25,7 @@ class TestBaseHelper:
         argnames="exc_type",
         argvalues=[
             Exception,
-            PyMongoError,
+            ValueError,
         ],
     )
     def test_exit(cls, exc_type: type[Exception]):
@@ -65,7 +64,7 @@ class TestAsyncBaseHelper:
         argnames="exc_type",
         argvalues=[
             Exception,
-            PyMongoError,
+            ValueError,
         ],
     )
     async def test_exit(cls, exc_type: type[Exception]):
