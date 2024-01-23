@@ -12,7 +12,7 @@ from pymongohelper._base import (
 
 
 class TestBaseHelper:
-    class ChildHelper(BaseHelper):
+    class ChildHelper(BaseHelper[MagicMock]):
         def __call__(self) -> dict:
             return {}
 
@@ -38,7 +38,7 @@ class TestBaseHelper:
 
 
 class TestPyMongoHelper:
-    class ChildHelper(PyMongoHelper):
+    class ChildHelper(PyMongoHelper[MagicMock]):
         def __call__(self) -> dict:
             return {}
 
@@ -51,7 +51,7 @@ class TestPyMongoHelper:
 
 
 class TestAsyncBaseHelper:
-    class ChildHelper(AsyncBaseHelper):
+    class ChildHelper(AsyncBaseHelper[MagicMock]):
         async def __call__(self) -> dict:
             return {}
 
@@ -75,7 +75,7 @@ class TestAsyncBaseHelper:
 
 
 class TestAsyncMongoHelper:
-    class ChildHelper(AsyncMongoHelper):
+    class ChildHelper(AsyncMongoHelper[MagicMock]):
         async def __call__(self) -> dict:
             return {}
 

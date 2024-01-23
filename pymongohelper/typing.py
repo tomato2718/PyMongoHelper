@@ -2,6 +2,9 @@
 Typing module of pymongohelper
 """
 
-__all__ = ['DocumentType']
+__all__ = ["DocumentType", "CollectionType"]
 
-from pymongo.typings import _DocumentType as DocumentType
+from typing import TypeVar, TypeAlias, Mapping, Any
+
+DocumentType: TypeAlias = Mapping[str, Any]
+CollectionType = TypeVar("CollectionType")

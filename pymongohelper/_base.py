@@ -7,27 +7,25 @@ __all__ = [
 
 from abc import ABC, abstractmethod
 from types import TracebackType
-from typing import Generic, Self
+from typing import Any, Generic, Self
 
-from pymongo.collection import Collection
-
-from .typing import DocumentType
+from .typing import CollectionType
 
 
-class BaseHelper(ABC, Generic[DocumentType]):
+class BaseHelper(ABC, Generic[CollectionType]):
     """
     Base helper class for pymongo clients.
 
     This class do nothing, just a template help you design db clients.
 
     Usage::
-        
+
         foo_collection = database.get_collection("foo")
-        
-        class MongoReader(BaseHelper):
+
+        class MongoReader(BaseHelper[Collection[DocumentType]]):
             _collection = foo_collection
 
-            def __call__(self):
+            def __call__(self) -> dict[str, Any]:
                 # do some query here
                 res = self._collection.find_one()
                 return res
@@ -37,7 +35,7 @@ class BaseHelper(ABC, Generic[DocumentType]):
 
     """
 
-    _collection: Collection
+    _collection: CollectionType
 
     def __init__(self) -> None:
         pass
@@ -54,39 +52,39 @@ class BaseHelper(ABC, Generic[DocumentType]):
         pass
 
     @abstractmethod
-    def __call__(self) -> DocumentType:
+    def __call__(self) -> Any:
         pass
 
 
-class PyMongoHelper(BaseHelper[DocumentType]):
+class PyMongoHelper(BaseHelper[CollectionType]):
     """
     Helper class with simple constructor method.
 
     Usage::
 
-        class MongoReader(PyMongoHelper[DocumentType]):
-            def __call__(self) -> DocumentType:
+        foo_collection = database.get_collection("foo")
+
+        class MongoReader(PyMongoHelper[Collection[DocumentType]]):
+            def __call__(self) -> dict[str, Any]:
                 # do some query here
                 res = self._collection.find_one()
                 return res
-                
-        foo_collection = database.get_collection("foo")
 
         with MongoReader(foo_collection) as reader:
             data = reader()
 
     """
 
-    def __init__(self, collection: Collection[DocumentType]) -> None:
+    def __init__(self, collection: CollectionType) -> None:
         """
         Constructor method.
 
-        :param Collection[DocumentType] collection: The collection to use.
+        :param CollectionType collection: The collection to use.
         """
         self._collection = collection
 
 
-class AsyncBaseHelper(ABC, Generic[DocumentType]):
+class AsyncBaseHelper(ABC, Generic[CollectionType]):
     """
     Base async helper class for pymongo clients.
 
@@ -96,10 +94,10 @@ class AsyncBaseHelper(ABC, Generic[DocumentType]):
 
         foo_collection = database.get_collection("foo")
 
-        class AsyncMongoReader(AsyncBaseHelper):
+        class AsyncMongoReader(AsyncBaseHelper[AsyncIOMotorCollection[DocumentType]]):
             _collection = foo_collection
 
-            async def __call__(self):
+            async def __call__(self) -> dict[str, Any]:
                 # do some query here
                 res = await self._collection.find_one()
                 return res
@@ -109,7 +107,7 @@ class AsyncBaseHelper(ABC, Generic[DocumentType]):
 
     """
 
-    _collection: Collection
+    _collection: CollectionType
 
     def __init__(self) -> None:
         pass
@@ -126,33 +124,33 @@ class AsyncBaseHelper(ABC, Generic[DocumentType]):
         pass
 
     @abstractmethod
-    async def __call__(self) -> DocumentType:
+    async def __call__(self) -> Any:
         pass
 
 
-class AsyncMongoHelper(AsyncBaseHelper[DocumentType]):
+class AsyncMongoHelper(AsyncBaseHelper[CollectionType]):
     """
     Helper async class with simple constructor method.
 
     Usage::
 
-        class MongoReader(AsyncMongoHelper[DocumentType]):
-            async def __call__(self) -> DocumentType:
+        foo_collection = database.get_collection("foo")
+
+        class MongoReader(AsyncMongoHelper[AsyncIOMotorCollection[DocumentType]]):
+            async def __call__(self) -> dict[str, Any]:
                 # do some query here
                 res = await self._collection.find_one()
                 return res
-
-        foo_collection = database.get_collection("foo")
 
         async with MongoReader(foo_collection) as reader:
             data = await reader()
 
     """
 
-    def __init__(self, collection: Collection[DocumentType]) -> None:
+    def __init__(self, collection: CollectionType) -> None:
         """
         Constructor method.
 
-        :param Collection[DocumentType] collection: The collection to use.
+        :param CollectionType collection: The collection to use.
         """
         self._collection = collection
