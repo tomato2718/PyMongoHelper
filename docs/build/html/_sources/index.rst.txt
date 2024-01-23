@@ -38,7 +38,7 @@ Installation
 
 .. code-block:: shell
 
-    pip install pymongohelper-0.3.0-py3-none-any.whl
+    pip install pymongohelper-0.3.1-py3-none-any.whl
 
 
 Usage
