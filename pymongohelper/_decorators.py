@@ -8,7 +8,7 @@ from ._base import AsyncBaseHelper, BaseHelper
 from .typing import CollectionType
 
 _SubHelperClass = TypeVar(
-    name="_SubHelperClass",
+    "_SubHelperClass",
     bound=BaseHelper[Any] | AsyncBaseHelper[Any],
 )
 
