@@ -26,7 +26,7 @@ System
 Python
 ^^^^^^^^^^^^^
 
-- ``pymongo==4.6.1``
+- ``None``
 
 Setup
 -------------
@@ -38,7 +38,7 @@ Installation
 
 .. code-block:: shell
 
-    pip install pymongohelper-0.2.1-py3-none-any.whl
+    pip install pymongohelper-0.3.0-py3-none-any.whl
 
 
 Usage
@@ -52,28 +52,30 @@ Import as a module
 .. code-block:: python
 
     from typing import Any
-    
+
     from pymongo import MongoClient
+    from pymongo.collection import Collection
     from pymongohelper import BaseHelper, UseCollectionDecorator
-    
+
     # configure your own pymongo client
     client = MongoClient(
-        host=URI,
+        host="URI",
+        document_class=dict[str, Any]
     )
     database = client.get_database(DATABASE_NAME)
     collection = database.get_collection(COLLLECTION_NAME)
 
     # create decorators base on collections
     use_foo_collection = UseCollectionDecorator(collection)
-    
+
     # apply decorators to your database querying objects
     @use_foo_collection
-    class MongoReader(BaseHelper):
+    class MongoReader(BaseHelper[Collection[dict[str, Any]]]):
         def __call__(self) -> dict[str, Any]:
             result = self._collection.find_one({})
-            return result
-    
-    # use the database database querying objects
+            return result or {}
+
+    # use the database querying objects
     with MongoReader() as read_data:
         result = read_data()
 
