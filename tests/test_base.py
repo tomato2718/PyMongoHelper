@@ -1,7 +1,6 @@
 from unittest.mock import MagicMock
 
 import pytest
-from pymongo.errors import PyMongoError
 
 from pymongohelper._base import (
     AsyncBaseHelper,
@@ -12,7 +11,7 @@ from pymongohelper._base import (
 
 
 class TestBaseHelper:
-    class ChildHelper(BaseHelper):
+    class ChildHelper(BaseHelper[MagicMock]):
         def __call__(self) -> dict:
             return {}
 
@@ -26,7 +25,7 @@ class TestBaseHelper:
         argnames="exc_type",
         argvalues=[
             Exception,
-            PyMongoError,
+            ValueError,
         ],
     )
     def test_exit(cls, exc_type: type[Exception]):
@@ -38,7 +37,7 @@ class TestBaseHelper:
 
 
 class TestPyMongoHelper:
-    class ChildHelper(PyMongoHelper):
+    class ChildHelper(PyMongoHelper[MagicMock]):
         def __call__(self) -> dict:
             return {}
 
@@ -51,7 +50,7 @@ class TestPyMongoHelper:
 
 
 class TestAsyncBaseHelper:
-    class ChildHelper(AsyncBaseHelper):
+    class ChildHelper(AsyncBaseHelper[MagicMock]):
         async def __call__(self) -> dict:
             return {}
 
@@ -65,7 +64,7 @@ class TestAsyncBaseHelper:
         argnames="exc_type",
         argvalues=[
             Exception,
-            PyMongoError,
+            ValueError,
         ],
     )
     async def test_exit(cls, exc_type: type[Exception]):
@@ -75,7 +74,7 @@ class TestAsyncBaseHelper:
 
 
 class TestAsyncMongoHelper:
-    class ChildHelper(AsyncMongoHelper):
+    class ChildHelper(AsyncMongoHelper[MagicMock]):
         async def __call__(self) -> dict:
             return {}
 
