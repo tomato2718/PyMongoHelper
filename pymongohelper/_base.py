@@ -94,7 +94,7 @@ class AsyncBaseHelper(ABC, Generic[CollectionType]):
 
         foo_collection = database.get_collection("foo")
 
-        class AsyncMongoReader(AsyncBaseHelper[AsyncIOMotorCollection[DocumentType]]):
+        class AsyncMongoReader(AsyncBaseHelper[AgnosticCollection]):
             _collection = foo_collection
 
             async def __call__(self) -> dict[str, Any]:
@@ -136,7 +136,7 @@ class AsyncMongoHelper(AsyncBaseHelper[CollectionType]):
 
         foo_collection = database.get_collection("foo")
 
-        class MongoReader(AsyncMongoHelper[AsyncIOMotorCollection[DocumentType]]):
+        class MongoReader(AsyncMongoHelper[AgnosticCollection]):
             async def __call__(self) -> dict[str, Any]:
                 # do some query here
                 res = await self._collection.find_one()
