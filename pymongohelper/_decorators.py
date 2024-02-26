@@ -43,5 +43,5 @@ class UseCollectionDecorator(Generic[CollectionType]):
         self._collection = collection
 
     def __call__(self, helper_class: type[_SubHelperClass]) -> type[_SubHelperClass]:
-        helper_class._collection = self._collection
+        setattr(helper_class, "_collection", self._collection)
         return helper_class
