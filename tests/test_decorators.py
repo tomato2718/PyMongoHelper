@@ -21,7 +21,7 @@ class TestUseCollectionDecorator:
             def __call__(self) -> dict:
                 return {}
 
-        assert isinstance(TestHelper._collection, MagicMock)
+        assert isinstance(getattr(TestHelper, "_collection"), MagicMock)
 
         with TestHelper() as helper:
             assert isinstance(helper._collection, MagicMock)
@@ -33,7 +33,7 @@ class TestUseCollectionDecorator:
             async def __call__(self) -> dict:
                 return {}
 
-        assert isinstance(TestHelper._collection, MagicMock)
+        assert isinstance(getattr(TestHelper, "_collection"), MagicMock)
 
         async with TestHelper() as helper:
             assert isinstance(helper._collection, MagicMock)
